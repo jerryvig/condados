@@ -47,7 +47,6 @@ const processCounty = (county_name, state) => {
 
         if (line.startsWith('Estimated median house or condo value')) {
           let afterColon = line.split(':')[1].trim();
-          console.log(afterColon.split(' ')[0]);
           data.median_home_price = afterColon.split(' ')[0];
         }
       }
