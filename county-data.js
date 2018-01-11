@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-
+const INPUT_FILE_NAME = 'county_list.csv';
 const OUTPUT_FILE_NAME = 'county_data.csv';
 
 const processCounty = (county_name, state) => {
@@ -18,7 +18,6 @@ const processCounty = (county_name, state) => {
     .then((res) => {
       return res.text();
     }).then((body) => {
-      console.log(body);
       console.log('Fetching %s, %s', county_name, state);
 
       const $ = cheerio.load(body);
@@ -60,42 +59,24 @@ const processCounty = (county_name, state) => {
   });
 };
 
-var counties = [
-  /* {county_name: 'Broward', state: 'FL'},
-  {county_name: 'Miami-Dade', state: 'FL'},
+let counties = [];
 
-  {county_name: 'Fort Bend', state: 'TX'},
-  {county_name: 'Travis', state: 'TX'},
-  {county_name: 'Montgomery', state: 'TX'},
-  {county_name: 'Williamson', state: 'TX'},
-  {county_name: 'Hays', state: 'TX'},
-*/
-
-  {county_name: 'Santa Clara', state: 'CA'},
-  {county_name: 'Marin', state: 'CA'},
-  {county_name: 'San Francisco', state: 'CA'},
-  {county_name: 'Contra Costa', state: 'CA'},
-  {county_name: 'Alameda', state: 'CA'},
-  {county_name: 'Solano', state: 'CA'},
-  {county_name: 'Napa', state: 'CA'},
-  {county_name: 'Santa Cruz', state: 'CA'},
-
-/*   {county_name: 'Bernalillo', state: 'NM'},
-  {county_name: 'Santa Fe', state: 'NM'},
-  {county_name: 'Lincoln', state: 'NM'},
-  {county_name: 'La Plata', state: 'CO'},
-  {county_name: 'Archuleta', state: 'CO'},
-
-  {county_name: 'Harris', state: 'TX'},
-
-  {county_name: 'Yolo', state: 'CA'},
-
-  {county_name: 'Los Angeles', state: 'CA'},
-  {county_name: 'Orange', state: 'CA'},
-  {county_name: 'San Bernardino', state: 'CA'},
-  {county_name: 'Riverside', state: 'CA'},
-  {county_name: 'Ventura', state: 'CA'}, */
-];
+const readCounties = (callback) => {
+  fs.readFile(INPUT_FILE_NAME, 'utf8', (err, data) => {
+    if (err) throw err;
+    let lines = data.split('\n');
+    lines.forEach((line) => {
+      let parts = line.split(',');
+      if (parts.length > 1) {
+        counties.push({
+          county_name: parts[0],
+          state: parts[1],
+        });
+      }
+    });
+    callback();
+  });
+};
 
 const writeData = (data, callback) => {
   fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
@@ -122,18 +103,14 @@ const doNextCounty = () => {
   }
 };
 
-fs.exists(OUTPUT_FILE_NAME, (exists) => {
-  if (exists) {
-    fs.unlink(OUTPUT_FILE_NAME, (err) => {
+readCounties(() => {
+  fs.exists(OUTPUT_FILE_NAME, (exists) => {
+    if (exists) {
+      fs.unlink(OUTPUT_FILE_NAME, (err) => {
+        doNextCounty();
+      });
+    } else {
       doNextCounty();
-    });
-  } else {
-    doNextCounty();
-  }
+    }
+  });
 });
-
-
-
-
-
-
