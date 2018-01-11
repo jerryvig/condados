@@ -59,6 +59,8 @@ var counties = [
   {county_name: 'Archuleta', state: 'CO'},
   {county_name: 'Los Angeles', state: 'CA'},
   {county_name: 'Miami-Dade', state: 'FL'},
+  {county_name: 'Harris', state: 'TX'},
+  {county_name: 'Marin', state: 'CA'},
 ];
 
 const writeData = (data, callback) => {
