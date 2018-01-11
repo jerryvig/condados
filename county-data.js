@@ -1,7 +1,9 @@
 
-const fs = require('fs');
-const fetch = require('node-fetch');
 const cheerio = require('cheerio');
+const fetch = require('node-fetch');
+const fs = require('fs');
+const json2csv = require('json2csv');
+
 
 const OUTPUT_FILE_NAME = 'county_data.csv';
 
@@ -28,28 +30,31 @@ const processCounty = (county_name, state) => {
         }
       }
   }).then(() => {
-    writeData(() => {
+    writeData({county_name: county_name, state: state}, () => {
       doNextCounty();
     });
   });
 };
-
 
 var counties = [
   {county_name: 'Broward', state: 'FL'},
   {county_name: 'Fort Bend', state: 'TX'},
   {county_name: 'Travis', state: 'TX'},
   {county_name: 'Montgomergy', state: 'TX'},
+  {county_name: 'Williamson', state: 'TX'},
+  {county_name: 'Hays', state: 'TX'},
   {county_name: 'Santa Clara', state: 'CA'},
   {county_name: 'Bernalillo', state: 'NM'},
+  {county_name: 'Santa Fe', state: 'NM'},
+  {county_name: 'La Plata', state: 'CO'},
   {county_name: 'Los Angeles', state: 'CA'},
   {county_name: 'Miami-Dade', state: 'FL'},
 ];
 
-const writeData = (callback) => {
+const writeData = (data, callback) => {
   fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
     if (err) throw err;
-    fs.appendFile(fd, 'append this data mofo\n', 'utf8', (err) => {
+    fs.appendFile(fd, JSON.stringify(data) + '\n', 'utf8', (err) => {
       fs.close(fd, (err) => {
         if (err) throw err;
         //callback here
