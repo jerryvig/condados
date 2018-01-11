@@ -9,10 +9,16 @@ const OUTPUT_FILE_NAME = 'county_data.csv';
 
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
+  let data = {
+    county_name: county_name,
+    state: state,
+  };
+
   fetch(url)
     .then((res) => {
       return res.text();
     }).then((body) => {
+      console.log('Fetching %s, %s', county_name, state);
 
       const $ = cheerio.load(body);
       const fb = $('#foreign-born-population');
@@ -21,16 +27,18 @@ const processCounty = (county_name, state) => {
       for (let line of fbLines) {
         if (line.startsWith('Number of foreign born residents')) {
           let afterColon = line.split(':')[1].trim();
-          console.log(afterColon.split(' ')[0]);
+          data.foreign_born = afterColon.split(' ')[0];
         }
         if (line.startsWith(county_name + ' County:')) {
           let afterColon = line.split(':')[1];
           let pct = afterColon.split('%')[0];
-          console.log(pct + '%');
+          data.foreign_born_pct = pct + '%';
         }
       }
+
+
   }).then(() => {
-    writeData({county_name: county_name, state: state}, () => {
+    writeData(data, () => {
       doNextCounty();
     });
   });
@@ -40,13 +48,15 @@ var counties = [
   {county_name: 'Broward', state: 'FL'},
   {county_name: 'Fort Bend', state: 'TX'},
   {county_name: 'Travis', state: 'TX'},
-  {county_name: 'Montgomergy', state: 'TX'},
+  {county_name: 'Montgomery', state: 'TX'},
   {county_name: 'Williamson', state: 'TX'},
   {county_name: 'Hays', state: 'TX'},
   {county_name: 'Santa Clara', state: 'CA'},
   {county_name: 'Bernalillo', state: 'NM'},
   {county_name: 'Santa Fe', state: 'NM'},
+  {county_name: 'Lincoln', state: 'NM'},
   {county_name: 'La Plata', state: 'CO'},
+  {county_name: 'Archuleta', state: 'CO'},
   {county_name: 'Los Angeles', state: 'CA'},
   {county_name: 'Miami-Dade', state: 'FL'},
 ];
@@ -54,10 +64,12 @@ var counties = [
 const writeData = (data, callback) => {
   fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
     if (err) throw err;
-    fs.appendFile(fd, JSON.stringify(data) + '\n', 'utf8', (err) => {
+    fs.appendFile(fd, json2csv({
+      data: data,
+      hasCSVColumnTitle: false
+    }) + '\n', 'utf8', (err) => {
       fs.close(fd, (err) => {
         if (err) throw err;
-        //callback here
         callback();
       });
       if (err) throw err;
@@ -83,3 +95,9 @@ fs.exists(OUTPUT_FILE_NAME, (exists) => {
     doNextCounty();
   }
 });
+
+
+
+
+
+
