@@ -18,6 +18,7 @@ const processCounty = (county_name, state) => {
     .then((res) => {
       return res.text();
     }).then((body) => {
+      console.log(body);
       console.log('Fetching %s, %s', county_name, state);
 
       const $ = cheerio.load(body);
@@ -36,6 +37,21 @@ const processCounty = (county_name, state) => {
         }
       }
 
+      const household = $('#household-prices');
+      let householdLines = household.text().split('\n');
+
+      for (let line of householdLines) {
+        if (line.startsWith('Estimated median household income')) {
+          let afterColon = line.split(':')[1].trim();
+          data.median_household_income = afterColon.split(' ')[0];
+        }
+
+        if (line.startsWith('Estimated median house or condo value')) {
+          let afterColon = line.split(':')[1].trim();
+          console.log(afterColon.split(' ')[0]);
+          data.median_home_price = afterColon.split(' ')[0];
+        }
+      }
 
   }).then(() => {
     writeData(data, () => {
@@ -45,27 +61,40 @@ const processCounty = (county_name, state) => {
 };
 
 var counties = [
-  {county_name: 'Broward', state: 'FL'},
+  /* {county_name: 'Broward', state: 'FL'},
+  {county_name: 'Miami-Dade', state: 'FL'},
+
   {county_name: 'Fort Bend', state: 'TX'},
   {county_name: 'Travis', state: 'TX'},
   {county_name: 'Montgomery', state: 'TX'},
   {county_name: 'Williamson', state: 'TX'},
   {county_name: 'Hays', state: 'TX'},
+*/
+
   {county_name: 'Santa Clara', state: 'CA'},
-  {county_name: 'Bernalillo', state: 'NM'},
+  {county_name: 'Marin', state: 'CA'},
+  {county_name: 'San Francisco', state: 'CA'},
+  {county_name: 'Contra Costa', state: 'CA'},
+  {county_name: 'Alameda', state: 'CA'},
+  {county_name: 'Solano', state: 'CA'},
+  {county_name: 'Napa', state: 'CA'},
+  {county_name: 'Santa Cruz', state: 'CA'},
+
+/*   {county_name: 'Bernalillo', state: 'NM'},
   {county_name: 'Santa Fe', state: 'NM'},
   {county_name: 'Lincoln', state: 'NM'},
   {county_name: 'La Plata', state: 'CO'},
   {county_name: 'Archuleta', state: 'CO'},
-  {county_name: 'Los Angeles', state: 'CA'},
-  {county_name: 'Miami-Dade', state: 'FL'},
+
   {county_name: 'Harris', state: 'TX'},
-  {county_name: 'Marin', state: 'CA'},
+
   {county_name: 'Yolo', state: 'CA'},
+
+  {county_name: 'Los Angeles', state: 'CA'},
   {county_name: 'Orange', state: 'CA'},
   {county_name: 'San Bernardino', state: 'CA'},
   {county_name: 'Riverside', state: 'CA'},
-  {county_name: 'Ventura': state: 'CA'},
+  {county_name: 'Ventura', state: 'CA'}, */
 ];
 
 const writeData = (data, callback) => {
@@ -89,7 +118,7 @@ const doNextCounty = () => {
   if (nextCounty) {
     setTimeout(() => {
       processCounty(nextCounty.county_name, nextCounty.state);
-    }, 500);
+    }, 700);
   }
 };
 
