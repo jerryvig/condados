@@ -1,4 +1,5 @@
 
+const fs = require('fs');
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 
@@ -34,6 +35,7 @@ var counties = [
   {county_name: 'Broward', state: 'FL'},
   {county_name: 'Fort Bend', state: 'TX'},
   {county_name: 'Santa Clara', state: 'CA'},
+  {county_name: 'Bernalillo', state: 'NM'},
 ];
 
 const doNextCounty = () => {
@@ -45,4 +47,12 @@ const doNextCounty = () => {
   }
 };
 
-doNextCounty();
+fs.exists('county_data.csv', (exists) => {
+  if (exists) {
+    fs.unlink('county_data.csv', (err) => {
+      doNextCounty();
+    });
+  } else {
+    doNextCounty();
+  }
+});
