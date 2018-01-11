@@ -3,6 +3,8 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 
+const OUTPUT_FILE_NAME = 'county_data.csv';
+
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
   fetch(url)
@@ -26,7 +28,9 @@ const processCounty = (county_name, state) => {
         }
       }
   }).then(() => {
-    doNextCounty();
+    writeData(() => {
+      doNextCounty();
+    });
   });
 };
 
@@ -34,9 +38,27 @@ const processCounty = (county_name, state) => {
 var counties = [
   {county_name: 'Broward', state: 'FL'},
   {county_name: 'Fort Bend', state: 'TX'},
+  {county_name: 'Travis', state: 'TX'},
+  {county_name: 'Montgomergy', state: 'TX'},
   {county_name: 'Santa Clara', state: 'CA'},
   {county_name: 'Bernalillo', state: 'NM'},
+  {county_name: 'Los Angeles', state: 'CA'},
+  {county_name: 'Miami-Dade', state: 'FL'},
 ];
+
+const writeData = (callback) => {
+  fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
+    if (err) throw err;
+    fs.appendFile(fd, 'append this data mofo\n', 'utf8', (err) => {
+      fs.close(fd, (err) => {
+        if (err) throw err;
+        //callback here
+        callback();
+      });
+      if (err) throw err;
+    });
+  })
+};
 
 const doNextCounty = () => {
   var nextCounty = counties.shift();
@@ -47,9 +69,9 @@ const doNextCounty = () => {
   }
 };
 
-fs.exists('county_data.csv', (exists) => {
+fs.exists(OUTPUT_FILE_NAME, (exists) => {
   if (exists) {
-    fs.unlink('county_data.csv', (err) => {
+    fs.unlink(OUTPUT_FILE_NAME, (err) => {
       doNextCounty();
     });
   } else {
