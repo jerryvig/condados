@@ -4,8 +4,8 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const INPUT_FILE_NAME = 'county_list.csv';
-const OUTPUT_FILE_NAME = 'county_data.csv';
+const INPUT_FILE_NAME = 'county_list_NV.csv';
+const OUTPUT_FILE_NAME = 'county_data_NV.csv';
 
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
@@ -109,7 +109,7 @@ const doNextCounty = () => {
   }
 };
 
-readCounties(() => {
+const checkOutputFileExits = () => {
   fs.exists(OUTPUT_FILE_NAME, (exists) => {
     if (exists) {
       fs.unlink(OUTPUT_FILE_NAME, (err) => {
@@ -119,4 +119,6 @@ readCounties(() => {
       doNextCounty();
     }
   });
-});
+};
+
+readCounties(checkOutputFileExits);
