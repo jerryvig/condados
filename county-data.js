@@ -14,11 +14,12 @@ const processCounty = (county_name, state) => {
     state: state,
   };
 
+  console.log('Fetching %s, %s', county_name, state);
   fetch(url)
     .then((res) => {
       return res.text();
     }).then((body) => {
-      console.log('Fetching %s, %s', county_name, state);
+
 
       const $ = cheerio.load(body);
       const fb = $('#foreign-born-population');
