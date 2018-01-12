@@ -51,6 +51,13 @@ const processCounty = (county_name, state) => {
         }
       }
 
+      const population = $('#population');
+      let popLines = population.text().split('\n');
+      for (let line of popLines) {
+        if (line.startsWith('County population in')) {
+          data.population = line.split(':')[1].trim().split(' ')[0];
+        }
+      }
   }).then(() => {
     writeData(data, () => {
       doNextCounty();
@@ -98,7 +105,7 @@ const doNextCounty = () => {
   if (nextCounty) {
     setTimeout(() => {
       processCounty(nextCounty.county_name, nextCounty.state);
-    }, 700);
+    }, 1000);
   }
 };
 
