@@ -20,7 +20,6 @@ const processCounty = (county_name, state) => {
       return res.text();
     }).then((body) => {
 
-
       const $ = cheerio.load(body);
       const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
