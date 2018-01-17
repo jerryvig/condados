@@ -58,6 +58,14 @@ const processCounty = (county_name, state) => {
           data.population = line.split(':')[1].trim().split(' ')[0];
         }
       }
+
+      const popDensity = $('#population-density');
+      let popDensityLines = popDensity.text().split('\n');
+      for (let line of popDensityLines) {
+        if (line.startsWith('Population density')) {
+          data.population_density = line.split(':')[1].trim().split(' ')[0];
+        }
+      }
   }).then(() => {
     writeData(data, () => {
       doNextCounty();
