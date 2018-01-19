@@ -119,9 +119,8 @@ const writeData = (data, callback) => {
 const doNextCounty = () => {
   var nextCounty = counties.shift();
   if (nextCounty) {
-    setTimeout(() => {
-      processCounty(nextCounty.county_name, nextCounty.state);
-    }, 1000);
+    setTimeout(
+      processCounty.bind(null, nextCounty.county_name, nextCounty.state), 1000)
   }
 };
 
