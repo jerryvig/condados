@@ -4,8 +4,8 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const INPUT_FILE_NAME = 'county_list_SD.csv';
-const OUTPUT_FILE_NAME = 'county_data_SD.csv';
+const INPUT_FILE_NAME = 'county_list_NV.csv';
+const OUTPUT_FILE_NAME = 'county_data_NV.csv';
 
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
@@ -64,6 +64,14 @@ const processCounty = (county_name, state) => {
       for (let line of popDensityLines) {
         if (line.startsWith('Population density')) {
           data.population_density = line.split(':')[1].trim().split(' ')[0];
+        }
+      }
+
+      const medianAge = $('#median-age');
+      let medianAgeLines = medianAge.text().split('\n');
+      for (let line of medianAgeLines) {
+        if (line.startsWith('Median resident age')) {
+          data.median_age = line.split(':')[1].trim().split(' ')[0];
         }
       }
   }).then(() => {
