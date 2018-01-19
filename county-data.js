@@ -74,6 +74,18 @@ const processCounty = (county_name, state) => {
           data.median_age = line.split(':')[1].trim().split(' ')[0];
         }
       }
+
+      const razas = $('#races');
+      let razasLines = razas.text().split('\n');
+      //console.log(razasLines);
+      for (let line of razasLines) {
+        if (line.startsWith('White Non-Hispanic Alone')) {
+          data.white_pct = line.split('(')[1].split(')')[0];
+        }
+        if (line.startsWith('Black Non-Hispanic Alone')) {
+          data.black_pct = line.split('(')[1].split(')')[0];
+        }
+      }
   }).then(() => {
     writeData(data, () => {
       doNextCounty();
