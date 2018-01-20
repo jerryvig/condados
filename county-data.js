@@ -77,13 +77,21 @@ const processCounty = (county_name, state) => {
 
       const razas = $('#races');
       let razasLines = razas.text().split('\n');
-      //console.log(razasLines);
       for (let line of razasLines) {
         if (line.startsWith('White Non-Hispanic Alone')) {
           data.white_pct = line.split('(')[1].split(')')[0];
         }
         if (line.startsWith('Black Non-Hispanic Alone')) {
           data.black_pct = line.split('(')[1].split(')')[0];
+        }
+        if (line.startsWith('Hispanic or Latino')) {
+          data.hispanic_pct = line.split('(')[1].split(')')[0];
+        }
+        if (line.startsWith('Asian alone')) {
+          data.asian_pct = line.split('(')[1].split(')')[0];
+        }
+        if (line.startsWith('American Indian and Alaska Native alone')) {
+          data.native_american_pct = line.split('(')[1].split(')')[0];
         }
       }
   }).then(() => {
