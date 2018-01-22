@@ -4,8 +4,8 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const INPUT_FILE_NAME = 'county_list_CA.csv';
-const OUTPUT_FILE_NAME = 'county_data_CA.csv';
+const INPUT_FILE_NAME = 'county_list_NV.csv';
+const OUTPUT_FILE_NAME = 'county_data_NV.json';
 
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
@@ -95,9 +95,7 @@ const processCounty = (county_name, state) => {
         }
       }
   }).then(() => {
-    writeData(data, () => {
-      doNextCounty();
-    });
+    writeData(data, doNextCounty);
   });
 };
 
@@ -123,10 +121,9 @@ const readCounties = (callback) => {
 const writeData = (data, callback) => {
   fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
     if (err) throw err;
-    fs.appendFile(fd, json2csv({
-      data: data,
-      hasCSVColumnTitle: false
-    }) + '\n', 'utf8', (err) => {
+    fs.appendFile(fd,
+      JSON.stringify(data) + ',\n'
+      , 'utf8', (err) => {
       fs.close(fd, (err) => {
         if (err) throw err;
         callback();
@@ -141,6 +138,8 @@ const doNextCounty = () => {
   if (nextCounty) {
     setTimeout(
       processCounty.bind(null, nextCounty.county_name, nextCounty.state), 1000)
+  } else {
+    console.log('we are done writing the the counties.');
   }
 };
 
