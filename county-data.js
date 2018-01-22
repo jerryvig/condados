@@ -6,6 +6,7 @@ const json2csv = require('json2csv');
 
 const INPUT_FILE_NAME = 'county_list_NV.csv';
 const OUTPUT_FILE_NAME = 'county_data_NV.json';
+const CSV_OUTPUT = 'county_data_NV.csv';
 
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
@@ -139,7 +140,22 @@ const doNextCounty = () => {
     setTimeout(
       processCounty.bind(null, nextCounty.county_name, nextCounty.state), 1000)
   } else {
-    console.log('we are done writing the the counties.');
+    fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
+      if (err) throw err;
+      fs.appendFile(fd, ']\n', 'utf8', (err) => {
+        if (err) throw err;
+        fs.close(fd, (err) => {
+          if (err) throw err;
+          fs.readFile(OUTPUT_FILE_NAME, 'utf8', (err, data) => {
+            if (err) throw err;
+            var jsonOutput = json2csv({data: eval(data)});
+            fs.writeFile(CSV_OUTPUT, jsonOutput, 'utf8', (err, fd) => {
+              if (err) throw err;
+            });
+          });
+        });
+      });
+    });
   }
 };
 
@@ -147,7 +163,14 @@ const checkOutputFileExits = () => {
   fs.exists(OUTPUT_FILE_NAME, (exists) => {
     if (exists) {
       fs.unlink(OUTPUT_FILE_NAME, (err) => {
-        doNextCounty();
+        if (err) throw err;
+        fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
+          if (err) throw err;
+          fs.appendFile(fd, '[\n', 'utf8', (err) => {
+            if (err) throw err;
+              doNextCounty();
+          });
+        });
       });
     } else {
       doNextCounty();
