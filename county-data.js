@@ -107,6 +107,16 @@ const processCounty = (county_name, state) => {
           data.bs_degree = line.split(':')[1].trim();
         }
       }
+
+      const genders = $('#population-by-sex');
+      let genderLines = genders.text().split('\n');
+      for (let line of genderLines) {
+        if (line.startsWith('Males')) {
+          let colonParts = line.split(':');
+          console.log(colonParts[1].split(' ')[1].split('\t')[0]);
+        }
+      }
+      process.exit();
   }).then(() => {
     writeData(data, doNextCounty);
   });
