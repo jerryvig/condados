@@ -112,11 +112,11 @@ const processCounty = (county_name, state) => {
       let genderLines = genders.text().split('\n');
       for (let line of genderLines) {
         if (line.startsWith('Males')) {
-          let colonParts = line.split(':');
-          console.log(colonParts[1].split(' ')[1].split('\t')[0]);
+          let parenParts = line.split('(');
+          data.males = parenParts[0].split(':')[1].trim();
+          data.females = parenParts[1].split(':')[1].trim();
         }
       }
-      process.exit();
   }).then(() => {
     writeData(data, doNextCounty);
   });
