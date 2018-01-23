@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const state = 'CA'
+const state = 'NM'
 const INPUT_FILE_NAME = `county_list_${state}.csv`;
 const OUTPUT_FILE_NAME = `county_data_${state}.json`;
 const CSV_OUTPUT = `county_data_${state}.csv`;
@@ -117,6 +117,10 @@ const processCounty = (county_name, state) => {
           data.females = parenParts[1].split(':')[1].trim();
         }
       }
+
+      const householdPrices = $('#household-prices');
+      console.log(householdPrices.text());
+      process.exit();
   }).then(() => {
     writeData(data, doNextCounty);
   });
