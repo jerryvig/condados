@@ -119,8 +119,15 @@ const processCounty = (county_name, state) => {
       }
 
       const householdPrices = $('#household-prices');
-      console.log(householdPrices.text());
-      process.exit();
+      let householdPricesLines = householdPrices.text().split('\n');
+      for (let line of householdPricesLines) {
+        if (line.endsWith('people')) {
+          if (line.startsWith(county_name)) {
+            data.household_size = line.split(':')[1].split(' ')[0];
+          }
+        }
+      }
+      // process.exit();
   }).then(() => {
     writeData(data, doNextCounty);
   });
