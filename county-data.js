@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const state = 'CA'
+const state = 'NM'
 const INPUT_FILE_NAME = `county_list_${state}.csv`;
 const OUTPUT_FILE_NAME = `county_data_${state}.json`;
 const CSV_OUTPUT = `county_data_${state}.csv`;
@@ -127,7 +127,6 @@ const processCounty = (county_name, state) => {
           }
         }
       }
-      // process.exit();
   }).then(() => {
     writeData(data, doNextCounty);
   });
@@ -201,7 +200,7 @@ const checkOutputFileExits = () => {
           if (err) throw err;
           fs.appendFile(fd, '[\n', 'utf8', (err) => {
             if (err) throw err;
-              doNextCounty();
+            doNextCounty();
           });
         });
       });
