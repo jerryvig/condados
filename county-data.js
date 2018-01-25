@@ -129,6 +129,13 @@ const processCounty = (county_name, state) => {
           }
         }
       }
+
+      const costOfLivingLines = $('#cost-of-living').text().split('\n');
+      for (let line of costOfLivingLines) {
+        if (line.includes('cost of living index')) {
+          data.cost_of_living_index = line.split(':')[1].split(' ')[1];
+        }
+      }
   }).then(writeData.bind(null, data, doNextCounty));
 };
 
