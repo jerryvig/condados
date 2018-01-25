@@ -66,6 +66,8 @@ const processCounty = (county_name, state) => {
       for (let line of popDensityLines) {
         if (line.startsWith('Population density')) {
           data.population_density = line.split(':')[1].trim().split(' ')[0];
+        } else if (line.startsWith('Land area')) {
+          data.land_area = line.split(':')[1].trim().split(' ')[0].trim();
         }
       }
 
