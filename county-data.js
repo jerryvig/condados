@@ -127,11 +127,7 @@ const processCounty = (county_name, state) => {
           }
         }
       }
-  }).then(/* () => {
-    writeData(data, doNextCounty);
-  }*/
-    writeData.bind(null, data, doNextCounty)
-  );
+  }).then(writeData.bind(null, data, doNextCounty));
 };
 
 let counties = [];
