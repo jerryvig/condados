@@ -199,7 +199,9 @@ const doNextCounty = () => {
           if (err) throw err;
           fs.readFile(OUTPUT_FILE_NAME, 'utf8', (err, data) => {
             if (err) throw err;
-            let jsonOutput = json2csv({data: eval(data)}) + '\n';
+            let jsonOutput = json2csv({
+              data: eval(data)
+            }) + '\n';
             fs.writeFile(CSV_OUTPUT, jsonOutput, 'utf8', (err, fd) => {
               if (err) throw err;
             });
