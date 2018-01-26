@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const state = 'NM'
+const state = 'CA'
 const INPUT_FILE_NAME = `county_list_${state}.csv`;
 const OUTPUT_FILE_NAME = `county_data_${state}.json`;
 const CSV_OUTPUT = `county_data_${state}.csv`;
@@ -21,11 +21,10 @@ const processCounty = (county_name, state) => {
     .then((res) => {
       return res.text();
     }).then((body) => {
-
       const $ = cheerio.load(body);
+
       const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
-
       for (let line of fbLines) {
         if (line.startsWith('Number of foreign born residents')) {
           let afterColon = line.split(':')[1].trim();
@@ -134,6 +133,15 @@ const processCounty = (county_name, state) => {
       for (let line of costOfLivingLines) {
         if (line.includes('cost of living index')) {
           data.cost_of_living_index = line.split(':')[1].split(' ')[1];
+          break;
+        }
+      }
+
+      const povertyLines = $('#poverty').text().split('\n');
+      for (let line of povertyLines) {
+        if (line.startsWith('Percentage of residents living in poverty in')) {
+          data.poverty = line.split(':')[1].trim();
+          break;
         }
       }
   }).then(writeData.bind(null, data, doNextCounty));
