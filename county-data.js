@@ -57,6 +57,7 @@ const processCounty = (county_name, state) => {
       for (let line of popLines) {
         if (line.startsWith('County population in')) {
           data.population = line.split(':')[1].trim().split(' ')[0];
+          break;
         }
       }
 
@@ -75,6 +76,7 @@ const processCounty = (county_name, state) => {
       for (let line of medianAgeLines) {
         if (line.startsWith('Median resident age')) {
           data.median_age = line.split(':')[1].trim().split(' ')[0];
+          break;
         }
       }
 
@@ -116,6 +118,7 @@ const processCounty = (county_name, state) => {
           let parenParts = line.split('(');
           data.males = parenParts[0].split(':')[1].trim();
           data.females = parenParts[1].split(':')[1].trim();
+          break;
         }
       }
 
@@ -125,6 +128,7 @@ const processCounty = (county_name, state) => {
         if (line.endsWith('people')) {
           if (line.startsWith(county_name)) {
             data.household_size = line.split(':')[1].split(' ')[0];
+            break;
           }
         }
       }
