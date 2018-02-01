@@ -8,7 +8,7 @@ const state = 'TX'
 const INPUT_FILE_NAME = `county_list_${state}.csv`;
 const OUTPUT_FILE_NAME = `county_data_${state}.json`;
 const CSV_OUTPUT = `county_data_${state}.csv`;
-const THROTTLE_PERIOD = 1000;
+const THROTTLE_PERIOD = 1200;
 
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
