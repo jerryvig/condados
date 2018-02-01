@@ -8,7 +8,7 @@ const state = 'TX'
 const INPUT_FILE_NAME = `county_list_${state}.csv`;
 const OUTPUT_FILE_NAME = `county_data_${state}.json`;
 const CSV_OUTPUT = `county_data_${state}.csv`;
-const THROTTLE_PERIOD = 1000;
+const THROTTLE_PERIOD = 1200;
 
 const processCounty = (county_name, state) => {
   const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
@@ -30,8 +30,7 @@ const processCounty = (county_name, state) => {
         if (line.startsWith('Number of foreign born residents')) {
           let afterColon = line.split(':')[1].trim();
           data.foreign_born = afterColon.split(' ')[0];
-        }
-        if (line.startsWith(county_name + ' County:')) {
+        } else if (line.startsWith(county_name + ' County:')) {
           let afterColon = line.split(':')[1];
           let pct = afterColon.split('%')[0];
           data.foreign_born_pct = pct + '%';
@@ -40,14 +39,11 @@ const processCounty = (county_name, state) => {
 
       const household = $('#household-prices');
       let householdLines = household.text().split('\n');
-
       for (let line of householdLines) {
         if (line.startsWith('Estimated median household income')) {
           let afterColon = line.split(':')[1].trim();
           data.median_household_income = afterColon.split(' ')[0];
-        }
-
-        if (line.startsWith('Estimated median house or condo value')) {
+        } else if (line.startsWith('Estimated median house or condo value')) {
           let afterColon = line.split(':')[1].trim();
           data.median_home_price = afterColon.split(' ')[0];
         }
