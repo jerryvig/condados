@@ -82,17 +82,13 @@ const processCounty = (county_name, state) => {
       for (let line of razasLines) {
         if (line.startsWith('White Non-Hispanic Alone')) {
           data.white_pct = line.split('(')[1].split(')')[0];
-        }
-        if (line.startsWith('Black Non-Hispanic Alone')) {
+        } else if (line.startsWith('Black Non-Hispanic Alone')) {
           data.black_pct = line.split('(')[1].split(')')[0];
-        }
-        if (line.startsWith('Hispanic or Latino')) {
+        } else if (line.startsWith('Hispanic or Latino')) {
           data.hispanic_pct = line.split('(')[1].split(')')[0];
-        }
-        if (line.startsWith('Asian alone')) {
+        } else if (line.startsWith('Asian alone')) {
           data.asian_pct = line.split('(')[1].split(')')[0];
-        }
-        if (line.startsWith('American Indian and Alaska Native alone')) {
+        } else if (line.startsWith('American Indian and Alaska Native alone')) {
           data.native_american_pct = line.split('(')[1].split(')')[0];
         }
       }
@@ -102,8 +98,7 @@ const processCounty = (county_name, state) => {
       for (let line of studentLines) {
         if (line.startsWith('People 25 years of age or older with a high school degree or higher')) {
           data.hs_diploma = line.split(':')[1].trim();
-        }
-        if (line.startsWith('People 25 years of age or older with a bachelor\'s degree or higher')) {
+        } else if (line.startsWith('People 25 years of age or older with a bachelor\'s degree or higher')) {
           data.bs_degree = line.split(':')[1].trim();
         }
       }
