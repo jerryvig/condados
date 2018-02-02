@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const state = 'TX'
+const state = 'CA'
 const INPUT_FILE_NAME = `county_list_${state}.csv`;
 const OUTPUT_FILE_NAME = `county_data_${state}.json`;
 const CSV_OUTPUT = `county_data_${state}.csv`;
@@ -137,6 +137,14 @@ const processCounty = (county_name, state) => {
       for (let line of povertyLines) {
         if (line.startsWith('Percentage of residents living in poverty in')) {
           data.poverty = line.split(':')[1].trim();
+          break;
+        }
+      }
+
+      const commuteGraphLines = $('#commute-graph').text().split('\n');
+      for (let line of commuteGraphLines) {
+        if (line.startsWith('Drove a car alone:')) {
+          data.transport_auto_alone = line.split('(')[1].replace(')','');
           break;
         }
       }
