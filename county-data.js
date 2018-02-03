@@ -145,7 +145,8 @@ const processCounty = (county_name, state) => {
       for (let line of commuteGraphLines) {
         if (line.startsWith('Drove a car alone:')) {
           data.transport_auto_alone = line.split('(')[1].replace(')','');
-          break;
+        } else if (line.startsWith('Bus or trolley bus:')) {
+          data.transport_bus_trolley = line.split('(')[1].replace(')', '');
         }
       }
   }).then(writeData.bind(null, data, doNextCounty));
