@@ -147,6 +147,8 @@ const processCounty = (county_name, state) => {
           data.transport_auto_alone = line.split('(')[1].replace(')','');
         } else if (line.startsWith('Bus or trolley bus:')) {
           data.transport_bus_trolley = line.split('(')[1].replace(')', '');
+        } else if (line.startsWith('Carpooled:')) {
+          data.transport_carpool = line.split('(')[1].replace(')', '');
         }
       }
   }).then(writeData.bind(null, data, doNextCounty));
