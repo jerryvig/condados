@@ -12,8 +12,7 @@ const THROTTLE_PERIOD = 1200;
 const processZipCode = (zip_code) => {
   const url = 'http://www.city-data.com/zips/' + zip_code + '.html';
   let data = {
-    county_name: county_name,
-    state: state,
+    zip_code: zip_code,
   };
 
   console.log('Fetching zip code ', zip_code);
@@ -150,9 +149,10 @@ const processZipCode = (zip_code) => {
           data.transport_carpool = line.split('(')[1].replace(')', '');
         }
       }
-
       process.exit();
-  }).then(writeData.bind(null, data, doNextCounty));
+
+  });
+    //.then(writeData.bind(null, data, doNextZipCode));
 };
 
 let counties = [];
@@ -190,7 +190,7 @@ const writeData = (data, callback) => {
 };
 
 const doNextZipCode = () => {
-  let nextCounty = counties.shift();
+  let nextCounty = zip_codes.shift();
   if (nextCounty) {
     setTimeout(
       processCounty.bind(null, nextCounty.county_name, nextCounty.state), THROTTLE_PERIOD)
