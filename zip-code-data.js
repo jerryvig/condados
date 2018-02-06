@@ -4,20 +4,20 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const state = 'TX'
+const zip_code = '95051'
 const INPUT_FILE_NAME = `county_list_${state}.csv`;
 const OUTPUT_FILE_NAME = `county_data_${state}.json`;
 const CSV_OUTPUT = `county_data_${state}.csv`;
 const THROTTLE_PERIOD = 1200;
 
-const processCounty = (county_name, state) => {
-  const url = 'http://www.city-data.com/county/' + county_name.replace(/ /g, '_') + '_County-' + state + '.html';
+const processZipCode = (county_name, state) => {
+  const url = 'http://www.city-data.com/zips/' + zip_code + '.html';
   let data = {
     county_name: county_name,
     state: state,
   };
 
-  console.log('Fetching %s, %s', county_name, state);
+  console.log('Fetching zip code ', zip_code);
   fetch(url)
     .then((res) => {
       return res.text();
@@ -151,6 +151,8 @@ const processCounty = (county_name, state) => {
           data.transport_carpool = line.split('(')[1].replace(')', '');
         }
       }
+
+      process.exit();
   }).then(writeData.bind(null, data, doNextCounty));
 };
 
@@ -188,7 +190,7 @@ const writeData = (data, callback) => {
   })
 };
 
-const doNextCounty = () => {
+const doNextZipCode = () => {
   let nextCounty = counties.shift();
   if (nextCounty) {
     setTimeout(
@@ -229,7 +231,7 @@ const checkOutputFileExits = () => {
         });
       });
     } else {
-      doNextCounty();
+      doNextZipCode();
     }
   });
 };
