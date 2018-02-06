@@ -4,13 +4,12 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const zip_code = '95051'
-const INPUT_FILE_NAME = `county_list_${state}.csv`;
-const OUTPUT_FILE_NAME = `county_data_${state}.json`;
-const CSV_OUTPUT = `county_data_${state}.csv`;
+const INPUT_FILE_NAME = `zip_code_list.csv`;
+const OUTPUT_FILE_NAME = `zip_code_data.json`;
+const CSV_OUTPUT = `zip_code_data.csv`;
 const THROTTLE_PERIOD = 1200;
 
-const processZipCode = (county_name, state) => {
+const processZipCode = (zip_code) => {
   const url = 'http://www.city-data.com/zips/' + zip_code + '.html';
   let data = {
     county_name: county_name,
@@ -236,4 +235,5 @@ const checkOutputFileExits = () => {
   });
 };
 
-readCounties(checkOutputFileExits);
+//readCounties(checkOutputFileExits);
+processZipCode('95051');
