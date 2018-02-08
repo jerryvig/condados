@@ -1,0 +1,24 @@
+{
+  "name": "condados",
+  "version": "1.0.0",
+  "description": "proyecto condados",
+  "main": "county-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerryvig/condados.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jerryvig/condados/issues"
+  },
+  "homepage": "https://github.com/jerryvig/condados#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "json2csv": "^3.11.5",
+    "node-fetch": "^2.0.0"
+  }
+}
