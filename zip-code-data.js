@@ -189,16 +189,6 @@ const processZipCode = (zip_code) => {
         }
       }
 
-      const students = $('#students');
-      let studentLines = students.text().split('\n');
-      for (let line of studentLines) {
-        if (line.startsWith('People 25 years of age or older with a high school degree or higher')) {
-          data.hs_diploma = line.split(':')[1].trim();
-        } else if (line.startsWith('People 25 years of age or older with a bachelor\'s degree or higher')) {
-          data.bs_degree = line.split(':')[1].trim();
-        }
-      }
-
       const householdPrices = $('#household-prices');
       let householdPricesLines = householdPrices.text().split('\n');
       for (let line of householdPricesLines) {
@@ -207,22 +197,6 @@ const processZipCode = (zip_code) => {
             data.household_size = line.split(':')[1].split(' ')[0];
             break;
           }
-        }
-      }
-
-      const costOfLivingLines = $('#cost-of-living').text().split('\n');
-      for (let line of costOfLivingLines) {
-        if (line.includes('cost of living index')) {
-          data.cost_of_living_index = line.split(':')[1].split(' ')[1];
-          break;
-        }
-      }
-
-      const povertyLines = $('#poverty').text().split('\n');
-      for (let line of povertyLines) {
-        if (line.startsWith('Percentage of residents living in poverty in')) {
-          data.poverty = line.split(':')[1].trim();
-          break;
         }
       }
 
