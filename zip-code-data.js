@@ -113,7 +113,7 @@ const processZipCode = (zip_code) => {
         }
       }
 
-      //american indian
+      //native american
       for (let line of lines) {
         if (line.includes('American Indian population')) {
           data.native_american = line.replace('American Indian population', '');
@@ -173,22 +173,6 @@ const processZipCode = (zip_code) => {
       console.log('data = ' + JSON.stringify(data, null, 2));
 
       /*
-      const razas = $('#races');
-      let razasLines = razas.text().split('\n');
-      for (let line of razasLines) {
-        if (line.startsWith('White Non-Hispanic Alone')) {
-          data.white_pct = line.split('(')[1].split(')')[0];
-        } else if (line.startsWith('Black Non-Hispanic Alone')) {
-          data.black_pct = line.split('(')[1].split(')')[0];
-        } else if (line.startsWith('Hispanic or Latino')) {
-          data.hispanic_pct = line.split('(')[1].split(')')[0];
-        } else if (line.startsWith('Asian alone')) {
-          data.asian_pct = line.split('(')[1].split(')')[0];
-        } else if (line.startsWith('American Indian and Alaska Native alone')) {
-          data.native_american_pct = line.split('(')[1].split(')')[0];
-        }
-      }
-
       const householdPrices = $('#household-prices');
       let householdPricesLines = householdPrices.text().split('\n');
       for (let line of householdPricesLines) {
@@ -210,9 +194,6 @@ const processZipCode = (zip_code) => {
           data.transport_carpool = line.split('(')[1].replace(')', '');
         }
       } */
-
-      //process.exit();
-
   }).then(writeData.bind(null, data, doNextZipCode));
 };
 
