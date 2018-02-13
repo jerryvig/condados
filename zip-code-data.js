@@ -119,6 +119,17 @@ const processZipCode = (zip_code) => {
       for (let line of lines) {
         if (line.includes('American Indian population')) {
           data.native_american = line.replace('American Indian population', '');
+          break;
+        }
+      }
+
+      //male/female
+      for (let line of lines) {
+        if (line.startsWith('Males')) {
+          console.log(line);
+          data.male_pct = line.split('(')[1].split(')')[0];
+          data.female_pct = line.split('(')[2].split(')')[0];
+          break;
         }
       }
 
