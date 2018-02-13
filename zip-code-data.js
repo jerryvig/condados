@@ -188,17 +188,6 @@ const processZipCode = (zip_code) => {
       console.log('data = ' + JSON.stringify(data, null, 2));
 
       /*
-      const householdPrices = $('#household-prices');
-      let householdPricesLines = householdPrices.text().split('\n');
-      for (let line of householdPricesLines) {
-        if (line.endsWith('people')) {
-          if (line.startsWith(county_name)) {
-            data.household_size = line.split(':')[1].split(' ')[0];
-            break;
-          }
-        }
-      }
-
       const commuteGraphLines = $('#commute-graph').text().split('\n');
       for (let line of commuteGraphLines) {
         if (line.startsWith('Drove a car alone:')) {
