@@ -32,10 +32,16 @@ const processZipCode = (zip_code) => {
           break;
         }
       }
-
       //foreign born population.
+      for (let line of lines) {
+        if (line.includes('Foreign born population:')) {
+          data.foreign_born_pct = line.split('(')[1].split(')')[0];
+         data.foreign_born = line.split(':')[1].split('(')[0].trim();
+         break;
+        }
+      }
 
-
+      console.log('data = ' + JSON.stringify(data, null, 2));
       /* const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
       for (let line of fbLines) {
