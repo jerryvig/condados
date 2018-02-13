@@ -115,6 +115,13 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      //american indian
+      for (let line of lines) {
+        if (line.includes('American Indian population')) {
+          data.native_american = line.replace('American Indian population', '');
+        }
+      }
+
       console.log('data = ' + JSON.stringify(data, null, 2));
       /* const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
