@@ -170,6 +170,12 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      for (let line of lines) {
+        if (line.includes('Mean travel time to work')) {
+          data.mean_travel_to_work = line.split(':')[5].split(' ')[1];
+        }
+      }
+
       console.log('data = ' + JSON.stringify(data, null, 2));
 
       /*
