@@ -170,9 +170,18 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      //mean time to work
       for (let line of lines) {
         if (line.includes('Mean travel time to work')) {
           data.mean_travel_to_work = line.split(':')[5].split(' ')[1];
+          break;
+        }
+      }
+
+      for (let line of lines) {
+        if (line.includes('Average household size:')) {
+          data.household_size = line.split(':')[2].split(' ')[0];
+          break;
         }
       }
 
