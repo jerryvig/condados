@@ -82,7 +82,14 @@ const processZipCode = (zip_code) => {
           break;
         }
       }
-      
+
+      //white
+      for (let line of lines) {
+        if (line.includes('White population')) {
+          data.white = line.replace('White population', '');
+        }
+      }
+
       console.log('data = ' + JSON.stringify(data, null, 2));
       /* const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
