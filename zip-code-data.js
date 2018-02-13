@@ -24,6 +24,8 @@ const processZipCode = (zip_code) => {
 
       let lines = $('#body').text().split('\n');
 
+      //console.log(JSON.stringify(lines, null, 2));
+
       //population
       for (let line of lines) {
         if (line.includes('Estimated zip code population in 2016:')) {
@@ -38,6 +40,18 @@ const processZipCode = (zip_code) => {
           data.foreign_born_pct = line.split('(')[1].split(')')[0];
          data.foreign_born = line.split(':')[1].split('(')[0].trim();
          break;
+        }
+      }
+
+      for (let line of lines) {
+        if (line.includes('Estimated median household income in 2016:')) {
+          data.median_household_income = line.split(':')[2].replace('Texas','');
+        }
+      }
+
+      for (let line of lines) {
+        if (line.includes('Estimated median house or condo value in 2016')) {
+          data.median_home_price = line.split(':')[1].trim();
         }
       }
 
