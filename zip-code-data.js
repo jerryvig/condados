@@ -126,9 +126,15 @@ const processZipCode = (zip_code) => {
       //male/female
       for (let line of lines) {
         if (line.startsWith('Males')) {
-          console.log(line);
           data.male_pct = line.split('(')[1].split(')')[0];
           data.female_pct = line.split('(')[2].split(')')[0];
+          break;
+        }
+      }
+
+      for (let line of lines) {
+        if (line.includes('cost of living index in zip code')) {
+          data.cost_of_living_index = line.split(':')[1].split(' ')[1];
           break;
         }
       }
