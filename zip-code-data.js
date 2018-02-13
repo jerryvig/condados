@@ -126,8 +126,8 @@ const processZipCode = (zip_code) => {
       //male/female
       for (let line of lines) {
         if (line.startsWith('Males')) {
-          data.male_pct = line.split('(')[1].split(')')[0];
-          data.female_pct = line.split('(')[2].split(')')[0];
+          data.male_pct = line.split('(')[1].split(')')[0].trim();
+          data.female_pct = line.split('(')[2].split(')')[0].trim();
           break;
         }
       }
@@ -139,10 +139,18 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      //poverty
       for (let i=0; i<lines.length; i++) {
         let line = lines[i];
         if (line.includes('Residents with income below the poverty level in 2016:')) {
           data.poverty = lines[i+1].split(':')[1].replace('Whole state', '');
+        }
+      }
+
+      for (let line of lines) {
+        if (line.includes('Bachelor\'s degree or higher:')) {
+          data.bachelors_degree = line.split(':')[2].split('%')[0] + '%';
+          break;
         }
       }
 
