@@ -24,8 +24,6 @@ const processZipCode = (zip_code) => {
 
       let lines = $('#body').text().split('\n');
 
-      //console.log(JSON.stringify(lines, null, 2));
-
       //population
       for (let line of lines) {
         if (line.includes('Estimated zip code population in 2016:')) {
@@ -38,8 +36,8 @@ const processZipCode = (zip_code) => {
       for (let line of lines) {
         if (line.includes('Foreign born population:')) {
           data.foreign_born_pct = line.split('(')[1].split(')')[0];
-         data.foreign_born = line.split(':')[1].split('(')[0].trim();
-         break;
+          data.foreign_born = line.split(':')[1].split('(')[0].trim();
+          break;
         }
       }
 
@@ -132,6 +130,7 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      //cost of living index
       for (let line of lines) {
         if (line.includes('cost of living index in zip code')) {
           data.cost_of_living_index = line.split(':')[1].split(' ')[1];
@@ -172,59 +171,8 @@ const processZipCode = (zip_code) => {
       }
 
       console.log('data = ' + JSON.stringify(data, null, 2));
-      /* const fb = $('#foreign-born-population');
-      let fbLines = fb.text().split('\n');
-      for (let line of fbLines) {
-        if (line.startsWith('Number of foreign born residents')) {
-          let afterColon = line.split(':')[1].trim();
-          data.foreign_born = afterColon.split(' ')[0];
-        } else if (line.startsWith(county_name + ' County:')) {
-          let afterColon = line.split(':')[1];
-          let pct = afterColon.split('%')[0];
-          data.foreign_born_pct = pct + '%';
-        }
-      }
 
-      const household = $('#household-prices');
-      let householdLines = household.text().split('\n');
-      for (let line of householdLines) {
-        if (line.startsWith('Estimated median household income')) {
-          let afterColon = line.split(':')[1].trim();
-          data.median_household_income = afterColon.split(' ')[0];
-        } else if (line.startsWith('Estimated median house or condo value')) {
-          let afterColon = line.split(':')[1].trim();
-          data.median_home_price = afterColon.split(' ')[0];
-        }
-      }
-
-      const population = $('#population');
-      let popLines = population.text().split('\n');
-      for (let line of popLines) {
-        if (line.startsWith('County population in')) {
-          data.population = line.split(':')[1].trim().split(' ')[0];
-          break;
-        }
-      }
-
-      const popDensity = $('#population-density');
-      let popDensityLines = popDensity.text().split('\n');
-      for (let line of popDensityLines) {
-        if (line.startsWith('Population density')) {
-          data.population_density = line.split(':')[1].trim().split(' ')[0];
-        } else if (line.startsWith('Land area')) {
-          data.land_area = line.split(':')[1].trim().split(' ')[0].trim();
-        }
-      }
-
-      const medianAge = $('#median-age');
-      let medianAgeLines = medianAge.text().split('\n');
-      for (let line of medianAgeLines) {
-        if (line.startsWith('Median resident age')) {
-          data.median_age = line.split(':')[1].trim().split(' ')[0];
-          break;
-        }
-      }
-
+      /*
       const razas = $('#races');
       let razasLines = razas.text().split('\n');
       for (let line of razasLines) {
