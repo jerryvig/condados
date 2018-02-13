@@ -4,9 +4,9 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
-const INPUT_FILE_NAME = `zip_code_list.csv`;
-const OUTPUT_FILE_NAME = `zip_code_data.json`;
-const CSV_OUTPUT = `zip_code_data.csv`;
+const INPUT_FILE_NAME = 'zip_code_list.csv';
+const OUTPUT_FILE_NAME = 'zip_code_data.json';
+const CSV_OUTPUT = 'zip_code_data.csv';
 const THROTTLE_PERIOD = 1200;
 
 const processZipCode = (zip_code) => {
@@ -52,6 +52,12 @@ const processZipCode = (zip_code) => {
       for (let line of lines) {
         if (line.includes('Estimated median house or condo value in 2016')) {
           data.median_home_price = line.split(':')[1].trim();
+        }
+      }
+
+      for (let line of lines) {
+        if (line.includes('Population density:')) {
+          data.population_density = line.split(':')[1].split(' ')[1];
         }
       }
 
@@ -184,24 +190,22 @@ const processZipCode = (zip_code) => {
         }
       } */
 
-      process.exit();
+      //process.exit();
 
   });
     //.then(writeData.bind(null, data, doNextZipCode));
 };
 
-let counties = [];
+let zipCodes = [];
 
-const readCounties = (callback) => {
+const readZipCodes = (callback) => {
   fs.readFile(INPUT_FILE_NAME, 'utf8', (err, data) => {
     if (err) throw err;
     let lines = data.split('\n');
     lines.forEach((line) => {
-      let parts = line.split(',');
-      if (parts.length > 1) {
-        counties.push({
-          county_name: parts[0],
-          state: parts[1],
+      if (line.length > 0) {
+        zipCodes.push({
+          zip_code: line.trim(),
         });
       }
     });
@@ -225,10 +229,10 @@ const writeData = (data, callback) => {
 };
 
 const doNextZipCode = () => {
-  let nextCounty = zip_codes.shift();
-  if (nextCounty) {
+  let nextZipCode = zipCodes.shift();
+  if (nextZipCode) {
     setTimeout(
-      processCounty.bind(null, nextCounty.county_name, nextCounty.state), THROTTLE_PERIOD)
+      processZipCode.bind(null, nextZipCode.zip_code), THROTTLE_PERIOD)
   } else {
     fs.open(OUTPUT_FILE_NAME, 'a', (err, fd) => {
       if (err) throw err;
@@ -260,7 +264,7 @@ const checkOutputFileExits = () => {
           if (err) throw err;
           fs.appendFile(fd, '[\n', 'utf8', (err) => {
             if (err) throw err;
-            doNextCounty();
+            doNextZipCode();
           });
         });
       });
@@ -270,6 +274,6 @@ const checkOutputFileExits = () => {
   });
 };
 
-//readCounties(checkOutputFileExits);
-processZipCode('78681');
+readZipCodes(checkOutputFileExits);
+//processZipCode('78681');
 //processZipCode('95051');
