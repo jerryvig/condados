@@ -147,10 +147,18 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      //bachelors
       for (let line of lines) {
         if (line.includes('Bachelor\'s degree or higher:')) {
-          data.bachelors_degree = line.split(':')[2].split('%')[0] + '%';
+          data.bachelors_degree = line.split(':')[2].split('%')[0].trim() + '%';
           break;
+        }
+      }
+
+      //graduate
+      for (let line of lines) {
+        if (line.includes('Graduate or professional degree:')) {
+          data.graduate_degree = line.split(':')[3].split('%')[0].trim() + '%';
         }
       }
 
