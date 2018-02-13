@@ -159,6 +159,15 @@ const processZipCode = (zip_code) => {
       for (let line of lines) {
         if (line.includes('Graduate or professional degree:')) {
           data.graduate_degree = line.split(':')[3].split('%')[0].trim() + '%';
+          break;
+        }
+      }
+
+      //hs diploma
+      for (let line of lines) {
+        if (line.includes('High school or higher:')) {
+          data.hs_diploma = line.split(':')[1].split('%')[0].trim() + '%';
+          break;
         }
       }
 
@@ -239,17 +248,6 @@ const processZipCode = (zip_code) => {
           data.hs_diploma = line.split(':')[1].trim();
         } else if (line.startsWith('People 25 years of age or older with a bachelor\'s degree or higher')) {
           data.bs_degree = line.split(':')[1].trim();
-        }
-      }
-
-      const genders = $('#population-by-sex');
-      let genderLines = genders.text().split('\n');
-      for (let line of genderLines) {
-        if (line.startsWith('Males')) {
-          let parenParts = line.split('(');
-          data.males = parenParts[0].split(':')[1].trim();
-          data.females = parenParts[1].split(':')[1].trim();
-          break;
         }
       }
 
