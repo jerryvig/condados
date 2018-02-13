@@ -43,24 +43,46 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      //median household income
       for (let line of lines) {
         if (line.includes('Estimated median household income in 2016:')) {
-          data.median_household_income = line.split(':')[2].replace('Texas','');
+          data.median_household_income = line.split(':')[2].replace('Texas','').replace('California', '');
+          break;
         }
       }
 
+      //median house or condo value
       for (let line of lines) {
         if (line.includes('Estimated median house or condo value in 2016')) {
           data.median_home_price = line.split(':')[1].trim();
+          break;
         }
       }
 
+      //population density
       for (let line of lines) {
         if (line.includes('Population density:')) {
           data.population_density = line.split(':')[1].split(' ')[1];
+          break;
         }
       }
 
+      //land area
+      for (let line of lines) {
+        if (line.includes('Land area:')) {
+          data.land_area = line.split(':')[1].split(' ')[1].trim();
+          break;
+        }
+      }
+
+      //median age
+      for (let line of lines) {
+        if (line.includes('Median resident age:This zip code:')) {
+          data.median_age = line.split(':')[2].split(' ')[0];
+          break;
+        }
+      }
+      
       console.log('data = ' + JSON.stringify(data, null, 2));
       /* const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
