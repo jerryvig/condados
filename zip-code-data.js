@@ -82,7 +82,39 @@ const processZipCode = (zip_code) => {
           break;
         }
       }
-      
+
+      //white
+      for (let line of lines) {
+        if (line.includes('White population')) {
+          data.white = line.replace('White population', '');
+          break;
+        }
+      }
+
+      //black
+      for (let line of lines) {
+        if (line.includes('Black population')) {
+          data.black = line.replace('Black population', '');
+          break;
+        }
+      }
+
+      //hispanic or latino
+      for (let line of lines) {
+        if (line.includes('Hispanic or Latino population')) {
+          data.hispanic = line.replace('Hispanic or Latino population', '');
+          break;
+        }
+      }
+
+      //asian
+      for (let line of lines) {
+        if (line.includes('Asian population')) {
+          data.asian = line.replace('Asian population', '');
+          break;
+        }
+      }
+
       console.log('data = ' + JSON.stringify(data, null, 2));
       /* const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
