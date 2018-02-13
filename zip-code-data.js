@@ -192,8 +192,7 @@ const processZipCode = (zip_code) => {
 
       //process.exit();
 
-  });
-    //.then(writeData.bind(null, data, doNextZipCode));
+  }).then(writeData.bind(null, data, doNextZipCode));
 };
 
 let zipCodes = [];
