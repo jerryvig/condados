@@ -15,14 +15,28 @@ const processZipCode = (zip_code) => {
     zip_code: zip_code,
   };
 
-  console.log('Fetching zip code ', zip_code);
+  console.log('Fetching zip code', zip_code);
   fetch(url)
     .then((res) => {
       return res.text();
     }).then((body) => {
       const $ = cheerio.load(body);
 
-      const fb = $('#foreign-born-population');
+      let lines = $('#body').text().split('\n');
+
+      //population
+      for (let line of lines) {
+        if (line.includes('Estimated zip code population in 2016:')) {
+          let parts = line.split(':');
+          data.population = parts[parts.length-1].trim();
+          break;
+        }
+      }
+
+      //foreign born population.
+
+
+      /* const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
       for (let line of fbLines) {
         if (line.startsWith('Number of foreign born residents')) {
@@ -148,7 +162,8 @@ const processZipCode = (zip_code) => {
         } else if (line.startsWith('Carpooled:')) {
           data.transport_carpool = line.split('(')[1].replace(')', '');
         }
-      }
+      } */
+
       process.exit();
 
   });
@@ -236,4 +251,5 @@ const checkOutputFileExits = () => {
 };
 
 //readCounties(checkOutputFileExits);
-processZipCode('95051');
+processZipCode('78681');
+//processZipCode('95051');
