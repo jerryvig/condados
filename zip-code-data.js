@@ -139,6 +139,13 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      for (let i=0; i<lines.length; i++) {
+        let line = lines[i];
+        if (line.includes('Residents with income below the poverty level in 2016:')) {
+          data.poverty = lines[i+1].split(':')[1].replace('Whole state', '');
+        }
+      }
+
       console.log('data = ' + JSON.stringify(data, null, 2));
       /* const fb = $('#foreign-born-population');
       let fbLines = fb.text().split('\n');
