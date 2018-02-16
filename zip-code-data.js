@@ -181,6 +181,7 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      //average household size
       for (let line of lines) {
         if (line.includes('Average household size:')) {
           data.household_size = line.split(':')[2].split(' ')[0];
