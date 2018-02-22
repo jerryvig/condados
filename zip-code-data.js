@@ -280,5 +280,3 @@ const checkOutputFileExits = () => {
 };
 
 readZipCodes(checkOutputFileExits);
-//processZipCode('78681');
-//processZipCode('95051');
