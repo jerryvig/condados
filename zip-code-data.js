@@ -44,7 +44,11 @@ const processZipCode = (zip_code) => {
       //median household income
       for (let line of lines) {
         if (line.includes('Estimated median household income in 2016:')) {
-          data.median_household_income = line.split(':')[2].replace('Texas','').replace('California', '');
+          data.median_household_income = line.split(':')[2]
+            .replace('Texas','')
+            .replace('California', '')
+            .replace('Nevada', '')
+            .replace('New Mexico', '');
           break;
         }
       }
