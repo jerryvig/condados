@@ -188,6 +188,7 @@ const processZipCode = (zip_code) => {
         }
       }
 
+      // commuter data
       for (let line of lines) {
         if (line.includes('Drove a car alone')) {
           data.transport_auto_alone = line.split('%')[0].split(' ').pop().replace(zip_code, '') + '%';
