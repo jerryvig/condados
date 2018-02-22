@@ -173,7 +173,6 @@ const processZipCode = (zip_code) => {
       //mean time to work
       for (let line of lines) {
         if (line.includes('Mean travel time to work')) {
-          console.log('line = ' + line);
           if (line && line.split(':').length > 5) {
             data.mean_travel_to_work = line.split(':')[5].split(' ')[1];
           }
@@ -189,19 +188,15 @@ const processZipCode = (zip_code) => {
         }
       }
 
-      console.log('data = ' + JSON.stringify(data, null, 2));
-
-      /*
-      const commuteGraphLines = $('#commute-graph').text().split('\n');
-      for (let line of commuteGraphLines) {
-        if (line.startsWith('Drove a car alone:')) {
-          data.transport_auto_alone = line.split('(')[1].replace(')','');
-        } else if (line.startsWith('Bus or trolley bus:')) {
-          data.transport_bus_trolley = line.split('(')[1].replace(')', '');
-        } else if (line.startsWith('Carpooled:')) {
-          data.transport_carpool = line.split('(')[1].replace(')', '');
+      for (let line of lines) {
+        if (line.includes('Drove a car alone')) {
+          data.transport_auto_alone = line.split('%')[0].split(' ').pop().replace(zip_code, '') + '%';
+        } else if (line.includes('Bus or trolley bus')) {
+          data.transport_bus_trolley = line.split('%')[0] + '%';
+        } else if (line.includes('Carpooled')) {
+          data.transport_carpool = line.split('%')[0] + '%';
         }
-      } */
+      }
   }).then(writeData.bind(null, data, doNextZipCode));
 };
 
