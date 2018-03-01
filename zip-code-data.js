@@ -48,7 +48,8 @@ const processZipCode = (zip_code) => {
             .replace('Texas','')
             .replace('California', '')
             .replace('Nevada', '')
-            .replace('New Mexico', '');
+            .replace('New Mexico', '')
+            .replace('Colorado', '');
           break;
         }
       }
