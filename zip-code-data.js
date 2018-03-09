@@ -50,7 +50,9 @@ const processZipCode = (zip_code) => {
             .replace('Nevada', '')
             .replace('New Mexico', '')
             .replace('Colorado', '')
-            .replace('North Carolina', '');
+            .replace('North Carolina', '')
+            .replace('Washington', '')
+            .replace('Oregon', '');
           break;
         }
       }
